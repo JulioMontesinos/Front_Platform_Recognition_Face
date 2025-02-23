@@ -4,10 +4,11 @@ import axios from "axios";
 
 const Home = () => {
     const navigate = useNavigate();
+    const BACK_URL = import.meta.env.VITE_BACK_URL || "http://localhost:5000";
 
     const handleLogout = async () => {
         try {
-            await axios.post("http://localhost:5000/api/auth/logout", {}, { withCredentials: true });
+            await axios.post(`${BACK_URL}/api/auth/logout`, {}, { withCredentials: true });
             navigate("/");
         } catch (error) {
             console.error("Logout failed", error);

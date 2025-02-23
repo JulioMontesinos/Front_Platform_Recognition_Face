@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import SimpleMessageBar from "./SimpleMessageBar"; // Importar el mensaje
+import SimpleMessageBar from "./SimpleMessageBar"; 
 import "../styles/registerForm.css";
 
 const RegisterForm = () => {

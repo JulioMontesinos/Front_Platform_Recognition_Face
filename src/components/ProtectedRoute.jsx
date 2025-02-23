@@ -4,12 +4,13 @@ import axios from "axios";
 
 const ProtectedRoute = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(null);
+    const BACK_URL = import.meta.env.VITE_BACK_URL || "http://localhost:5000";
 
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                await axios.get("http://localhost:5000/api/auth/profile", {
-                    withCredentials: true, // 🔥 Enviar cookies al backend
+                await axios.get(`${BACK_URL}/api/auth/profile`, {
+                  withCredentials: true, // Enviar cookies al backend
                 });
                 setIsAuthenticated(true);
             } catch (error) {
