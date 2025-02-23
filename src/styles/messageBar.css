@@ -1,0 +1,42 @@
+.message-bar {
+  position: absolute;
+  font-family: 'Arial', sans-serif;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  background-color: #1e1e1e;
+  color: white;
+  border-radius: 20px;
+  font-size: 13px;
+  text-align: center;
+  z-index: 1000;
+  border: 3px solid black;
+  animation: fadeInOut 2s ease-in-out;
+}
+
+/* Colores dinámicos según el tipo de mensaje */
+.message-bar.successful {
+  border-color: #2e7d32;
+}
+
+.message-bar.error {
+  border-color: #c62828;
+}
+
+.message-bar.warning {
+  border-color: #ef6c00;
+}
+
+.message-bar.confirm {
+  border-color: black;
+}
+
+@keyframes fadeInOut {
+  0%, 80% {
+      opacity: 1;
+  }
+  100% {
+      opacity: 0;
+  }
+}
