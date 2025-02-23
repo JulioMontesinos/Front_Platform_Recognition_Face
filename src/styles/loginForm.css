@@ -78,7 +78,7 @@ button:hover {
 
 @media (max-width: 768px) {
   .login-box {
-    width: 90%; /* Ocupa más espacio en pantallas pequeñas */
+    width: 80%; /* Ocupa más espacio en pantallas pequeñas */
     padding: 1.5rem;
   }
 
@@ -100,7 +100,7 @@ button:hover {
 /* Responsividad para Móviles Pequeños */
 @media (max-width: 480px) {
   .login-box {
-    width: 95%;
+    width: 80%;
     padding: 1.2rem;
   }
 
