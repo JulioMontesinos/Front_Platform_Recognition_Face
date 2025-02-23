@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import SimpleMessageBar from "./SimpleMessageBar";
-import "../styles/LoginForm.css";
+import "../styles/loginForm.css";
 
 const LoginForm = () => {
     const [formData, setFormData] = useState({ email: "", password: "" });
