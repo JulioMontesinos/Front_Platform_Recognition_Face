@@ -99,7 +99,7 @@ button:hover {
 /* Responsividad para Móviles Pequeños */
 @media (max-width: 480px) {
   .login-box {
-    width: 80%;
+    width: 90%;
     padding: 1.2rem;
   }
 
