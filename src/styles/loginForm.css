@@ -78,7 +78,6 @@ button:hover {
 
 @media (max-width: 768px) {
   .login-box {
-    width: 80%; /* Ocupa más espacio en pantallas pequeñas */
     padding: 1.5rem;
   }
 
