@@ -1,0 +1,74 @@
+
+ .live-content {
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  transition: opacity 0.5s ease-in-out;
+  overflow: hidden;
+}
+
+.live-content img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.webcam-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden; /* Asegura que no haya recortes inesperados */
+}
+
+.webcam-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Asegura que la imagen llene el contenedor sin distorsión */
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+
+.paused-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  flex-direction: column;
+}
+
+.resume-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 500;
+  color: black;
+}
+
+.resume-button:hover {
+  background-color: #f0f0f0;
+}

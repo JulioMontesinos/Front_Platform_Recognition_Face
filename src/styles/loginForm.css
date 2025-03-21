@@ -6,6 +6,16 @@
   padding: 20px;
 }
 
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  background: linear-gradient(to bottom, #f3e5d8, #e0c9a6);
+  position: relative;
+  backdrop-filter: blur(15px); 
+}
+
 .login-box {
   background: rgba(255, 255, 255, 0.4); 
   padding: 2rem;
@@ -42,7 +52,7 @@ input::placeholder {
   color: rgba(0, 0, 0, 0.6);
 }
 
-button {
+.button-signIn {
   width: 100%;
   padding: 15px;
   background: black;
@@ -55,7 +65,7 @@ button {
   font-weight: bold;
 }
 
-button:hover {
+.button-signIn:hover {
   background: rgba(0, 0, 0, 0.6);
 }
 

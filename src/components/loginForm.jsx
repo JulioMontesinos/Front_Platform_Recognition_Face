@@ -33,21 +33,23 @@ const LoginForm = () => {
     };
 
     return (
-        <div className="login-container">
-            {/* Mostrar el mensaje si existe */}
-            {message.text && <SimpleMessageBar message={message.text} type={message.type} onDismiss={() => setMessage({ text: "", type: "" })} />}
+        <div className="app-container">
+            <div className="login-container">
+                {/* Mostrar el mensaje si existe */}
+                {message.text && <SimpleMessageBar message={message.text} type={message.type} onDismiss={() => setMessage({ text: "", type: "" })} />}
 
-            <div className="login-box">
-                <h2>Login</h2>
-                <form onSubmit={handleSubmit}>
-                    <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-                    <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
-                    <button type="submit">Sign In</button>
-                </form>
-                <p className="login-signUp">
-                    <span>Don't have an account? </span>
-                    <span className="register-link" onClick={() => navigate("/register")}>Register</span>
-                </p>
+                <div className="login-box">
+                    <h2>Login</h2>
+                    <form onSubmit={handleSubmit}>
+                        <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
+                        <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
+                        <button type="submit" className="button-signIn">Sign In</button>
+                    </form>
+                    <p className="login-signUp">
+                        <span>Don't have an account? </span>
+                        <span className="register-link" onClick={() => navigate("/register")}>Register</span>
+                    </p>
+                </div>
             </div>
         </div>
     );

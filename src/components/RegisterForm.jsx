@@ -51,23 +51,25 @@ const RegisterForm = () => {
     };
 
     return (
-        <div className="register-container">
-            {/* Mostrar el mensaje si existe */}
-            {message.text && <SimpleMessageBar message={message.text} type={message.type} onDismiss={() => setMessage({ text: "", type: "" })} />}
+        <div className="app-container">
+            <div className="register-container">
+                {/* Mostrar el mensaje si existe */}
+                {message.text && <SimpleMessageBar message={message.text} type={message.type} onDismiss={() => setMessage({ text: "", type: "" })} />}
 
-            <div className="register-box">
-                <h2>Create Account</h2>
-                <form onSubmit={handleSubmit}>
-                    <input type="text" name="name" placeholder="Full Name" onChange={handleChange} required />
-                    <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-                    <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
-                    <input type="password" name="confirmPassword" placeholder="Repeat Password" onChange={handleChange} required />
-                    <button type="submit">Sign Up</button>
-                </form>
-                <p className="register-signUp">
-                    <span>Already have an account? </span>  
-                    <span className="register-link" onClick={() => navigate("/")}>Login</span>
-                </p>
+                <div className="register-box">
+                    <h2>Create Account</h2>
+                    <form onSubmit={handleSubmit}>
+                        <input type="text" name="name" placeholder="Full Name" onChange={handleChange} required />
+                        <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
+                        <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
+                        <input type="password" name="confirmPassword" placeholder="Repeat Password" onChange={handleChange} required />
+                        <button type="submit" className="button-register">Sign Up</button>
+                    </form>
+                    <p className="register-signUp">
+                        <span>Already have an account? </span>  
+                        <span className="register-link" onClick={() => navigate("/")}>Login</span>
+                    </p>
+                </div>
             </div>
         </div>
     );

@@ -1,0 +1,472 @@
+.upload-container {
+  flex: 1;
+  position: relative;
+  width: 98vw;
+  margin: 4vh auto;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.5s ease;
+  background-color: #dfe2e3; 
+}
+
+.upload-content {
+  display: flex;
+  position: relative;
+  justify-content: center; /* Centra horizontalmente dentro de screen-container */
+  align-items: center; /* Centra verticalmente dentro de screen-container */
+  height: 100%;
+  height: 100%; /* Usa todo el espacio disponible dentro de screen-container */
+  gap: 5%; /* Espacio entre los dos contenedores */
+  padding-top: 50px;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Cuando está "editing" (o sea, sidebar abierto), reducimos el ancho */
+.home-container.editing .upload-container {
+  width: calc(75vw - 10px);
+  margin-left: 10px;
+}
+
+/* Sidebar: oculto por defecto */
+.sidebar {
+  position: relative;
+  background-color: #1e1e1e;
+  width: 0;
+  padding: 20px 0;
+  height: auto;
+  color: white;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  transition: all 0.5s ease;
+  opacity: 0; /* Para que el contenido no se vea cuando está oculto */
+}
+
+/* Sidebar visible al hacer clic en el botón */
+.sidebar.visible {
+  width: 20vw; /* Anchura del menú */
+  max-width: 200px;
+  opacity: 1;
+  padding: 20px;
+  text-align: center;
+}
+
+.sidebar h3 {
+  margin-bottom: 20px;
+  white-space: nowrap;
+}
+
+.sidebar button {
+  display: block;
+  width: 190px;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #3a3a3a;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+}
+
+.sidebar button:hover {
+  background-color: #4a4a4a;
+}
+
+/* Botón flotante en la esquina superior derecha */
+
+
+.edit-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Ejemplo de un botón de logout con estilo similar (comentado en el JSX) */
+.logout-btn {
+  position: absolute;
+  top: 60px; /* Ajusta si quieres que aparezca debajo del botón brush */
+  right: 10px;
+  z-index: 1000;
+  background-color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.logout-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.file-upload-container {
+  text-align: center;
+}
+
+.file-input {
+  display: none;
+}
+
+.drop-zone {
+  border: 2px dashed #ccc;
+  padding: 30px;
+  border-radius: 8px;
+  text-align: center;
+  color: #777;
+  cursor: pointer;
+  width: 300px;
+  background: rgba(255, 255, 255, 0.5);
+  transition: background 0.3s ease;
+}
+
+.drop-zone:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* Estilos para el modal de confirmación */
+.modal-overlay {
+  position: absolute; /* Antes estaba en fixed */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; /* Ahora ocupa solo el contenedor padre */
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px);
+  z-index: 10; /* Ajusta el z-index para que se vea correctamente */
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  min-width: 320px;
+  margin-top: -150px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.confirm-btn, .cancel-btn {
+  padding: 12px 20px;
+  min-width: 100px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.1s;
+  background: #f9f9f9;
+  color: #666;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.confirm-btn:hover, .cancel-btn:hover{
+  background: #e2e2e2;
+}
+
+/* Estilos del + gigante */
+.drop-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px);
+  z-index: 100;
+  pointer-events: none;
+}
+
+.drop-overlay span {
+  font-size: 8rem;
+  color: white;
+  font-weight: bold;
+}
+
+.llm-container {
+  width: 60%;
+  height: 75%;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.results-container {
+  width: 20%;
+  height: 75%;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 12px;
+}
+
+
+.results-expression {
+  font-size: 40px;
+  font-weight: 700;
+  padding-top: 8px;
+  color: #444;
+}
+
+.results-otherExpression {
+  font-weight: 900;
+  color: #444;
+}
+
+.llm-container, .results-container {
+  align-self: flex-start;
+}
+
+.analysis-results {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 18px;
+  color: #666;
+}
+
+.results-analysis {
+  text-align: center;
+  color: #666;
+  font-size: 50px;
+  font-weight: 700;
+}
+
+.analysis-results p {
+  margin: 5px 0;
+}
+
+.container-analysis {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px; /* Espaciado entre los elementos */
+  margin-top: 40px; /* Espacio superior */
+}
+
+.analysis-item {
+  display: flex;
+  flex-direction: column; /* Apila el texto y el resultado verticalmente */
+  align-items: center;
+}
+
+.analysis-item ul {
+  list-style: none;  /* Elimina los puntos si no los quieres */
+  padding-left: 0;   /* Asegura que la lista esté alineada a la izquierda */
+  text-align: left;  /* Alinea el texto correctamente */
+}
+
+.analysis-item ul li {
+  position: relative;
+  padding-left: 20px;  /* Da espacio para el punto */
+}
+
+.analysis-item ul li::before {
+  content: "•";  /* Usa un punto en lugar de los predeterminados */
+  color: black;  /* Puedes cambiar el color */
+  font-size: 18px;  /* Ajusta el tamaño si es necesario */
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.analysis-item.other{
+  padding-top: 30px;
+  align-items: flex-start;
+}
+
+.uploaded-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ajusta la imagen sin deformarla */
+  border-radius: 12px; /* Opcional, si quieres bordes redondeados */
+}
+
+.upload-btn {
+  display: inline-block;
+  background-color: #9e9e9e; 
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  transition: background 0.3s, transform 0.1s;
+  border: none;
+  margin-top: 50px;
+}
+
+.upload-btn:hover {
+  background-color: #646464; /* Azul más oscuro en hover */
+}
+
+.upload-btn:active {
+  transform: scale(0.96); /* Efecto de presión al hacer clic */
+}
+
+.list-otherEmotions {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-top: 10px;
+  padding-left: 0;
+  
+}
+
+
+/* Responsivo: si la pantalla es pequeña, el sidebar se muestra abajo en vez de la izquierda */
+@media (max-width: 768px) {
+  .app-container.editing .upload-container {
+    width: 100%;
+    height: calc(100vh - 20vh); /* Ajusta la altura dejando espacio para la barra */
+    margin: 15px 0 0 0;
+  }
+
+  .sidebar {
+    width: 100%; /* Ocupa todo el ancho */
+    height: auto; /* Ajusta la altura automáticamente */
+    position: fixed; /* Fija la barra en la parte inferior */
+    bottom: 0; /* Ancla en la parte inferior */
+    left: 0; /* Asegura que esté alineada a la izquierda */
+    background-color: #1e1e1e; /* Color de fondo */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5); /* Sombra superior */
+    display: none; /* Cambia el layout a flex para alinear botones */
+    justify-content: space-around; /* Espacia uniformemente los botones */
+    align-items: center; /* Centra verticalmente los botones */
+    transition: all 0.5s ease; /* Transición suave */
+    overflow: hidden;
+  }
+
+  .sidebar.visible {
+    display: flex; /* Muestra la barra cuando es visible */
+    max-width: 100vw;
+    width: 100vw;
+    padding: 20px 20px 30px 0px;
+   
+  }
+
+  .sidebar button {
+      display: inline-block; /* Cambia a disposición horizontal */
+      /* width: auto; */ /* Ajusta el ancho dinámicamente */
+      min-width: 110px;
+      max-width: 110px;
+      /* padding: 10px 15px; */ /* Espaciado interno */
+      margin: 5px 5px; /* Espaciado entre botones */
+      font-size: 12px; /* Ajusta el tamaño de fuente */
+      background-color: #3a3a3a; /* Fondo de los botones */
+      border-radius: 5px; /* Bordes redondeados */
+      transition: background-color 0.3s ease; /* Transición suave en hover */
+    }
+
+  .sidebar button:hover {
+    background-color: #4a4a4a;
+  }
+}
+
+@media (max-width: 599px) {
+  .sidebar.visible {
+    padding: 20px 20px 5px 0px;
+  }
+}
+
+
+
+@media (max-height: 770px) and (max-width: 768px) {
+  .app-container.editing .upload-container {
+    height: calc(100vh - 22vh); /* Ajusta la altura dejando espacio para la barra */
+  }
+}
+
+@media (max-width: 360px){
+  .app-container.editing .upload-container {
+    height: calc(100vh - 22vh); /* Ajusta la altura dejando espacio para la barra */
+  }
+}
+
+
+
+
+
+/* Contenedor base para la vista de webcam */
+.live-content {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-color: lightblue; /* para que se note la diferencia */
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Ejemplo de fade-in/fade-out muy simple */
+.transition-container > div {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  /* Asegúrate de que coincidan los estilos */
+}
+
+
+
+.upload-content {
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hidden {
+  opacity: 0;
+  transform: translateY(20px); /* Efecto de desplazamiento al desaparecer */
+  position: absolute; /* Mantiene el tamaño del contenedor sin alterar el layout */
+  width: 100%;
+  height: 100%;
+}
+
+
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  color: #666;
+  font-size: 18px;
+  font-weight: bold;
+  border: 2px dashed #ccc;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.placeholder p {
+  margin: 5px 0;
+}

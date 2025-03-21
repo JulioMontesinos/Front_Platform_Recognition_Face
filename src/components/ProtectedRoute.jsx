@@ -20,7 +20,7 @@ const ProtectedRoute = () => {
         checkAuth();
     }, []);
 
-    if (isAuthenticated === null) return <div>Loading...</div>; // Mientras se verifica el token
+    if (isAuthenticated === null) return null; // Mientras se verifica el token
 
     return isAuthenticated ? <Outlet /> : <Navigate to="/" />;
 };
