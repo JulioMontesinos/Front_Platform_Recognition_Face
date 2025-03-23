@@ -1,145 +1,131 @@
-
-
 .home-container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  background-color: #1e1e1e; /* Fondo oscuro */
+  padding: 0 10px;
+  overflow: hidden;
+}
+
+.screen-container {
   flex: 1;
   position: relative;
-  height: 90vh;
   width: 98vw;
   margin: 4vh auto;
   border-radius: 20px;
   overflow: hidden;
-  transition: all .5s ease;
-  background-color: red;
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  background-color: #dfe2e3; 
 }
 
-.logout-btn {
+.screen-container.live{
+  background-color: #1e1e1e !important;
+}
+
+.home-container.editing .screen-container {
+  width: calc(75vw - 10px);
+  margin-left: 10px;
+}
+
+.file-screen-container {
+  text-align: center;
+}
+
+.title-upload{
+  text-align: center;
+  padding-top: 40px;
+}
+
+.title-live {
+  text-align: center;
+  padding-top: 40px;
+  background-color: #1e1e1e;
+  color: #dfe2e3;
+}
+
+@media (max-width: 768px) {
+  .app-container.editing .screen-container {
+    width: 100%;
+    height: calc(100vh - 20vh); /* Ajusta la altura dejando espacio para la barra */
+    margin: 15px 0 0 0;
+  }
+
+}
+
+@media (max-height: 770px) and (max-width: 768px) {
+  .app-container.editing .screen-container {
+    height: calc(100vh - 22vh); /* Ajusta la altura dejando espacio para la barra */
+  }
+}
+
+@media (max-width: 360px){
+  .app-container.editing .screen-container {
+    height: calc(100vh - 22vh); /* Ajusta la altura dejando espacio para la barra */
+  }
+}
+
+.upload-content {
+  background-color: #dfe2e3;
+}
+
+.live-content {
+  background-color: #1e1e1e;
+}
+
+.hidden {
+  opacity: 0;
+  transform: translateY(0px);
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.brush-button {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  background: #333;
-  color: #fff;
-  padding: 8px 15px;
-  font-size: 0.9rem;
+  top: 10px;
+  right: 10px;
+  z-index: 1000; /* Asegura que quede encima */
+  background-color: white;
   border: none;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.llm-container {
-  background: #fff;
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  max-width: 400px;
-  width: 100%;
-}
-
-
-.drop-zone {
-  border: 2px dashed #ccc;
-  padding: 30px;
-  border-radius: 8px;
-  margin-bottom: 15px;
-  text-align: center;
-  color: #777;
-}
-
-.drop-zone img {
-  max-width: 100%;
-  margin-top: 10px;
-}
-
-.file-input {
-  display: none;
-}
-
-.btn {
-  background: #222;
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: 0.3s;
-}
-
-.btn:hover {
-  opacity: 0.8;
-}
-
-.webcam-container {
-  margin-top: 15px;
-}
-
-/* .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
   display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(6px);
-} */
-
-.modal {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.15);
-  text-align: center;
-  min-width: 320px;
-}
-
-.modal-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 10px;
-}
-
-.confirm-btn, .cancel-btn {
-  padding: 10px 20px;
-  min-width: 100px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
   cursor: pointer;
-  transition: 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.confirm-btn {
-  background: #f5f5f5;
-  color: #333;
-  border: 1px solid #ddd;
+.brush-button:hover {
+  background-color: #f0f0f0;
 }
 
-.cancel-btn {
-  background: #f9f9f9;
-  color: #666;
-  border: 1px solid #ddd;
-}
-
-.drop-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.4);
+.closeCamera-button {
+  position: absolute;
+  top: 10px;
+  right: 70px;
+  z-index: 1000; 
+  background-color: white;
+  border: none;
+  border-radius: 20px;
+  width: 140px;
+  height: 40px;
   display: flex;
-  align-items: center;
   justify-content: center;
-  backdrop-filter: blur(2px);
-  z-index: 100;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: black;
+  font-weight: 500;
+  font-size: 15px;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 }
 
-.drop-overlay span {
-  font-size: 8rem;
-  color: white;
-  font-weight: bold;
+.closeCamera-button:hover {
+  background-color: #f0f0f0;
+}
+
+.visible {
+  opacity: 1;
+  visibility: visible;
 }

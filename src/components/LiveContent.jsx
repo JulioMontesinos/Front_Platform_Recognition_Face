@@ -4,7 +4,6 @@ import "../styles/liveContent.css";
 const LiveContent = ({ hiddenLive, isPaused, setIsPaused }) => {
   const [showWebcam, setShowWebcam] = useState(false);
   const [randomParam, setRandomParam] = useState(Date.now());
-  const [emotion, setEmotion] = useState("");
   let intervalId = null;
 
   useEffect(() => {
@@ -18,7 +17,7 @@ const LiveContent = ({ hiddenLive, isPaused, setIsPaused }) => {
     }
 
     return () => stopWebcamAndDetection(); // Cleanup cuando se desmonta
-  }, [hiddenLive, isPaused]); // Ahora también depende de isPaused
+  }, [hiddenLive, isPaused]);
 
   const captureWebcamFrame = async () => {
   try {
@@ -33,11 +32,11 @@ const LiveContent = ({ hiddenLive, isPaused, setIsPaused }) => {
 };
 
 const startEmotionDetection = () => {
-  let isProcessing = false; // 🚀 Flag para evitar peticiones simultáneas
+  let isProcessing = false; // Variable para evitar peticiones simultáneas
 
   intervalId = setInterval(async () => {
     if (!hiddenLive && !isProcessing && !isPaused) {
-      isProcessing = true; // 🛑 Bloquea nuevas peticiones hasta completar la actual
+      isProcessing = true; // Bloquea nuevas peticiones hasta completar la actual
 
       try {
         const file = await captureWebcamFrame();
@@ -48,6 +47,7 @@ const startEmotionDetection = () => {
 
         const formData = new FormData();
         formData.append("file", file, "webcam.jpg");
+        formData.append("source", "live");
 
         const response = await fetch("http://127.0.0.1:5001/analyze-image", {
           method: "POST",
@@ -60,14 +60,13 @@ const startEmotionDetection = () => {
         }
 
         const data = await response.json();
-        if (data.emotion) setEmotion(data.emotion);
       } catch (error) {
         console.error("Error fetching emotion:", error);
       }
 
-      isProcessing = false; // ✅ Desbloquea la siguiente petición
+      isProcessing = false; // Desbloquea la siguiente petición
     }
-  }, 5000); // ⏳ Ahora analizamos cada 3 segundos en vez de 2
+  }, 5000);
 };
 
   const stopWebcamAndDetection = () => {

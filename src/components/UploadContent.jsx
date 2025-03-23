@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import "../styles/uploadContent.css"; // O el CSS que necesites
+import "../styles/uploadContent.css"; 
 
-const UploadContent = ({hiddenUpload}) => {
+const UploadContent = ({hiddenUpload, setMessage}) => {
   const [dragging, setDragging] = useState(false);
   const [dragCounter, setDragCounter] = useState(0);
   const [fileToUpload, setFileToUpload] = useState(null);
   const [showConfirm, setShowConfirm] = useState(false);
   const [image, setImage] = useState(null);
 
-  // 🚀 Estados para la emoción y confianza
+  // Estados para la emoción y confianza
   const [emotion, setEmotion] = useState("");
   const [otherEmotions, setOtherEmotions] = useState([]);
   const [confidence, setConfidence] = useState("");
@@ -16,36 +16,87 @@ const UploadContent = ({hiddenUpload}) => {
   // Llamada al backend para analizar la imagen
   const processImage = async (file) => {
     if (!file) return;
+  
     const formData = new FormData();
     formData.append("file", file);
-
+    formData.append("source", "upload");
+  
     try {
-      // Ajusta la URL según tu backend
       const response = await fetch("http://127.0.0.1:5001/analyze-image", {
         method: "POST",
         body: formData,
       });
-      const data = await response.json();
-
-      if (data.error) {
-        console.error("Error from server:", data.error);
-      } else {
-        // 🚀 Actualiza la emoción y confianza recibida del servidor
-        setEmotion(data.dominant_emotion || "Unknown");
-        setConfidence(data.confidence || 0);
-        setOtherEmotions(data.top_emotions.slice(1));
+  
+      // Si el servidor está reiniciando, no devuelve JSON válido
+      if (!response.ok) {
+        const text = await response.text();
+        console.warn(" Server returned non-OK response:", response.status);
+  
+        if (text.includes("Server is restarting")) {
+          triggerReconnect();
+          return;
+        }
+  
+        setMessage({
+          text: "An unexpected server error occurred. Please try again.",
+          type: "error",
+        });
+        return;
       }
-
-      // Muestra la imagen localmente
+  
+      const data = await response.json();
+  
+      if (data.error) {
+        if (data.error.includes("server is restarting")) {
+          triggerReconnect();
+          return;
+        }
+  
+        console.error("Error from server:", data.error);
+        setMessage({
+          text: "An error occurred while processing the image. Please refresh and try again.",
+          type: "error",
+        });
+        return;
+      }
+  
+      // Si no hay errores, mostrar los resultados
+      setEmotion(data.dominant_emotion || "Unknown");
+      setConfidence(data.confidence || 0);
+      setOtherEmotions(data.top_emotions.slice(1));
+  
+      setMessage({
+        text: "Image successfully analyzed",
+        type: "successful",
+      });
+  
       setImage(URL.createObjectURL(file));
+  
     } catch (error) {
-      console.error("Error uploading image:", error);
+      console.error(" Error uploading image:", error);
+      setMessage({
+        text: " Network error. Please try again.",
+        type: "error",
+      });
     }
+  };
+
+  const isValidImageType = (file) => {
+    const acceptedTypes = ["image/jpeg", "image/png"];
+    return acceptedTypes.includes(file.type);
   };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      if (!isValidImageType(file)) {
+        setMessage({
+          text: "Only PNG and JPG files are supported",
+          type: "error",
+        });
+        return;
+      }
+  
       setFileToUpload(file);
       setShowConfirm(true);
     }
@@ -95,13 +146,58 @@ const UploadContent = ({hiddenUpload}) => {
 
   const confirmProcessing = () => {
     if (!fileToUpload) return;
+
+    if (!isValidImageType(fileToUpload)) {
+      setMessage({
+        text: "Only PNG and JPG files are supported",
+        type: "error"
+      });
+      setFileToUpload(null);
+      setShowConfirm(false);
+      return;
+    }
+  
     setImage(URL.createObjectURL(fileToUpload));
     processImage(fileToUpload);
     setShowConfirm(false);
   };
 
+  const triggerReconnect = () => {
+    setMessage({
+      text: " The server is restarting, trying to reconnect...",
+      type: "error"
+    });
+  
+    let attempts = 0;
+    const maxAttempts = 10;
+  
+    const checkServerInterval = setInterval(async () => {
+      try {
+        const res = await fetch("http://127.0.0.1:5001/ping");
+        if (res.ok) {
+          clearInterval(checkServerInterval);
+          console.log(" Server is back online");
+          setMessage({
+            text: " Server restarted! You can upload your image again.",
+            type: "successful"
+          });
+        }
+      } catch (err) {
+        console.log("⏳ Still waiting for server to restart...");
+      }
+  
+      attempts++;
+      if (attempts >= maxAttempts) {
+        clearInterval(checkServerInterval);
+        setMessage({
+          text: " Server did not respond after multiple attempts. Please refresh the page manually.",
+          type: "error"
+        });
+      }
+    }, 2000);
+  };
+
   return (
-      
       <>
         {dragging && <div className="drop-overlay"><span>+</span></div>}
 
@@ -117,11 +213,7 @@ const UploadContent = ({hiddenUpload}) => {
             </div>
           )}
 
-        
-
         <div className={`upload-content ${hiddenUpload ? "hidden" : ""}`} onDragEnter={handleDragEnter} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}>
-          
-          
 
         <div className="llm-container">
           {image ? (
@@ -140,6 +232,7 @@ const UploadContent = ({hiddenUpload}) => {
             {/* Botón para subir/cambiar imagen */}
             <input
               type="file"
+              accept="image/png, image/jpeg"
               id="file-upload"
               className="file-input"
               onChange={handleFileChange}
@@ -173,7 +266,6 @@ const UploadContent = ({hiddenUpload}) => {
                   </ul>}
                 </div>
               </div>
-            
           </div>
         </div>
       </>

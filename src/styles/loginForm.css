@@ -34,11 +34,12 @@ h2 {
   color: black; 
 }
 
-input {
+.input-login {
   width: 100%;
-  padding: 15px; /* Antes era más pequeño */
-  font-size: 16px; /* Mejor legibilidad */
+  padding: 15px 0 15px 0;
+  font-size: 16px;
   margin-bottom: 12px;
+  text-indent: 10px;
   border: none;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.7); 
@@ -48,7 +49,7 @@ input {
   -webkit-backdrop-filter: blur(10px);
 }
 
-input::placeholder {
+.input-login::placeholder {
   color: rgba(0, 0, 0, 0.6);
 }
 
@@ -92,10 +93,10 @@ input::placeholder {
   }
 
   h2 {
-    font-size: 1.5rem; /* Reduce el tamaño del título */
+    font-size: 1.5rem; 
   }
 
-  input {
+  .input-login {
     font-size: 14px;
     padding: 12px;
   }
@@ -114,10 +115,10 @@ input::placeholder {
   }
 
   h2 {
-    font-size: 1.3rem; /* Reduce aún más el tamaño */
+    font-size: 1.3rem; 
   }
 
-  input {
+  .input-login {
     font-size: 14px;
     padding: 10px;
   }
@@ -128,6 +129,6 @@ input::placeholder {
   }
 
   .login-signUp {
-    font-size: 12px; /* Hace más pequeño el texto del registro */
+    font-size: 12px; 
   }
 }

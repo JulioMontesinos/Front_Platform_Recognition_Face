@@ -15,7 +15,6 @@
   animation: fadeInOut 2s ease-in-out;
 }
 
-/* Colores dinámicos según el tipo de mensaje */
 .message-bar.successful {
   border-color: #2e7d32;
 }

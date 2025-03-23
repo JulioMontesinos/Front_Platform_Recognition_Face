@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import SimpleMessageBar from "./SimpleMessageBar";
@@ -7,8 +7,18 @@ import "../styles/loginForm.css";
 const LoginForm = () => {
     const [formData, setFormData] = useState({ email: "", password: "" });
     const [message, setMessage] = useState({ text: "", type: "" });
+
     const navigate = useNavigate();
     const BACK_URL = import.meta.env.VITE_BACK_URL || "http://localhost:5000";
+
+    //Recuperar mensaje de logout cuando se carga la página
+    useEffect(() => {
+        const storedMessage = localStorage.getItem("logoutMessage");
+        if (storedMessage) {
+            setMessage(JSON.parse(storedMessage));
+            localStorage.removeItem("logoutMessage"); // Limpiar mensaje después de mostrarlo
+        }
+    }, []);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -41,8 +51,8 @@ const LoginForm = () => {
                 <div className="login-box">
                     <h2>Login</h2>
                     <form onSubmit={handleSubmit}>
-                        <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-                        <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
+                        <input type="email" className="input-login" name="email" placeholder="Email" onChange={handleChange} required />
+                        <input type="password" className="input-login" name="password" placeholder="Password" onChange={handleChange} required />
                         <button type="submit" className="button-signIn">Sign In</button>
                     </form>
                     <p className="login-signUp">
