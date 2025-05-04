@@ -12,10 +12,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
-        <Route element={<ProtectedRoute />}>
-          <Route path="/home" element={<Home />} />
-        </Route>
-        {/* Ruta catch-all */}
+        <Route path="/home" element={<Home />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>

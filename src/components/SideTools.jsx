@@ -1,8 +1,9 @@
 import React from "react";
 import "../styles/sideTools.css";
 import { useNavigate } from "react-router-dom";
+import RestartButton from "./RestartButton";
 
-const SideTools = ({ isSidebarOpen, setCurrentView }) => {
+const SideTools = ({ isSidebarOpen, setCurrentView, setMessage }) => {
 
   const navigate = useNavigate();
 
@@ -45,6 +46,7 @@ const SideTools = ({ isSidebarOpen, setCurrentView }) => {
         Live Webcam
       </button>
       <button className="sidebar-btn logout" onClick={handleLogout}>Logout</button>
+      <RestartButton setMessage={setMessage} />
     </div>
   );
 };

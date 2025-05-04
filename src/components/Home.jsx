@@ -31,7 +31,7 @@ const Home = () => {
           onDismiss={() => setMessage({ text: "", type: "" })} 
         />
       )}
-      <SideTools isSidebarOpen={isSidebarOpen} setCurrentView={handleChangeView} />
+      <SideTools isSidebarOpen={isSidebarOpen} setCurrentView={handleChangeView} setMessage={setMessage} />
 
       <div className={currentView === 'upload' ? "screen-container" : "screen-container live"}>
 

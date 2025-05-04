@@ -1,21 +1,70 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect  } from "react";
 import "../styles/uploadContent.css"; 
 
 const UploadContent = ({hiddenUpload, setMessage}) => {
   const [dragging, setDragging] = useState(false);
   const [dragCounter, setDragCounter] = useState(0);
+  const loadingInterval = useRef(null);
   const [fileToUpload, setFileToUpload] = useState(null);
   const [showConfirm, setShowConfirm] = useState(false);
   const [image, setImage] = useState(null);
-
-  // Estados para la emoción y confianza
   const [emotion, setEmotion] = useState("");
   const [otherEmotions, setOtherEmotions] = useState([]);
   const [confidence, setConfidence] = useState("");
 
+  // Estados y refs para cargar el modelo y animar dots
+  const [modelLoaded, setModelLoaded] = useState(false);
+  const pingInterval = useRef(null);
+  const dotsInterval = useRef(null);
+
+  // Al montar, hacemos ping a server.py hasta que responda => modelo listo
+  useEffect(() => {
+    // Arranca animación de puntos
+    let dotCount = 0;
+    dotsInterval.current = setInterval(() => {
+      dotCount = (dotCount + 1) % 4;
+      setMessage({ text: `Loading model${".".repeat(dotCount)}`, type: "loading" });
+    }, 500);
+
+    // Ping al /ping
+    pingInterval.current = setInterval(async () => {
+      try {
+        const res = await fetch("http://127.0.0.1:5001/ping");
+        if (res.ok) {
+          // Modelo listo
+          clearInterval(pingInterval.current);
+          clearInterval(dotsInterval.current);
+          setModelLoaded(true);
+          setMessage({ text: "Model loaded", type: "successful" });
+          // Limpia el mensaje tras 2s
+          setTimeout(() => setMessage({ text: "", type: "" }), 2000);
+        }
+      } catch {
+        // sigue intentando…
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(pingInterval.current);
+      clearInterval(dotsInterval.current);
+    };
+  }, [setMessage]);
+
   // Llamada al backend para analizar la imagen
   const processImage = async (file) => {
     if (!file) return;
+    if (!modelLoaded) {
+      setMessage({ text: "Model not ready", type: "error" });
+      return;
+    }
+
+  // Para poner el mensaje de "Cargando" animado
+  let dotCount = 0;
+  loadingInterval.current = setInterval(() => {
+    dotCount = (dotCount + 1) % 4; // 0 → 1 → 2 → 3 → 0
+    const dots = ".".repeat(dotCount);
+    setMessage({ text: `Cargando${dots}`, type: "loading" });
+  }, 500);
   
     const formData = new FormData();
     formData.append("file", file);
@@ -26,6 +75,9 @@ const UploadContent = ({hiddenUpload, setMessage}) => {
         method: "POST",
         body: formData,
       });
+
+      //Paramos la animación al recibir respuesta
+      clearInterval(loadingInterval.current);
   
       // Si el servidor está reiniciando, no devuelve JSON válido
       if (!response.ok) {
@@ -69,10 +121,15 @@ const UploadContent = ({hiddenUpload, setMessage}) => {
         text: "Image successfully analyzed",
         type: "successful",
       });
+
+      //A los 2s borramos el mensaje
+      setTimeout(() => setMessage({ text: "", type: "" }), 3000);
   
       setImage(URL.createObjectURL(file));
   
     } catch (error) {
+      //Cerramos animación de carga si hay error
+      clearInterval(loadingInterval.current);
       console.error(" Error uploading image:", error);
       setMessage({
         text: " Network error. Please try again.",
@@ -164,7 +221,7 @@ const UploadContent = ({hiddenUpload, setMessage}) => {
 
   const triggerReconnect = () => {
     setMessage({
-      text: " The server is restarting, trying to reconnect...",
+      text: "The server is restarting, trying to reconnect...",
       type: "error"
     });
   

@@ -22,25 +22,29 @@ const LoginForm = () => {
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
+};
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        try {
-            const res = await axios.post(`${BACK_URL}/api/auth/login`, formData, {
-                withCredentials: true,
-            });
+    /* if(formData.email.trim() !== "" && formData.password.trim() !== "") {
+        setMessage({ text: res.data.msg, type: "successful" });
+        setTimeout(() => {
+            setMessage({ text: "", type: "" });
+            navigate("/home")
+        }, 2000); 
+    } */
 
-            setMessage({ text: res.data.msg, type: "successful" });
-            setTimeout(() => {
-                setMessage({ text: "", type: "" });
-                navigate("/home")
-            }, 2000); 
-        } catch (error) {
-            setMessage({ text: error.response?.data?.msg || "Something went wrong", type: "error" });
-        }
-    };
+    // Simulación local sin hablar con el servidor
+    if (formData.email && formData.password) {
+    setMessage({ text: "Login successful", type: "successful" });
+    setTimeout(() => {
+        setMessage({ text: "", type: "" });
+        navigate("/home");
+    }, 2000);
+    }
+
+};
 
     return (
         <div className="app-container">
