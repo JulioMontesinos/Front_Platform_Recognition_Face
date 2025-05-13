@@ -309,7 +309,7 @@ const UploadContent = ({hiddenUpload, setMessage}) => {
                 <div className="analysis-item">
                   <p>Confidence</p>
                   <span className="results-expression">
-                    {(image && confidence) ? `${parseFloat(confidence).toFixed(3)}%` : "--"}
+                    {(image && confidence) ? `${parseFloat(confidence).toFixed(1)}%` : "--"}
                   </span>
                 </div>
 
@@ -318,9 +318,13 @@ const UploadContent = ({hiddenUpload, setMessage}) => {
                   
                   {image && <ul className="list-otherEmotions">
                     {otherEmotions.map((emo, index) => (
-                      <li key={index}>{emo.name}: <span className="results-otherExpression">{emo.confidence.toFixed(3)}%</span></li>
+                      <li key={index}>{emo.name}: <span className="results-otherExpression">{emo.confidence.toFixed(1)}%</span></li>
                     ))}
                   </ul>}
+                </div>
+                <div className="model-accuracy-box">
+                  <p>Model Accuracy</p>
+                  <span className="accuracy-value">93%</span>
                 </div>
               </div>
           </div>

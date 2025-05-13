@@ -404,3 +404,22 @@
 .placeholder p {
   margin: 5px 0;
 }
+
+.model-accuracy-box {
+  padding: 10px;
+  margin-top: 10px;
+  text-align: center;
+  border-radius: 5px;
+  background-color: #dfe2e3;
+}
+
+.model-accuracy-box p {
+  margin: 0;
+  font-weight: 500;
+}
+
+.accuracy-value {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: black;
+}
