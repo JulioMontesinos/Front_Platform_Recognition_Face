@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import SimpleMessageBar from "./SimpleMessageBar";
+import {jwtDecode} from "jwt-decode";
 import "../styles/loginForm.css";
 
 const LoginForm = () => {
@@ -11,12 +12,27 @@ const LoginForm = () => {
     const navigate = useNavigate();
     const BACK_URL = import.meta.env.VITE_BACK_URL || "http://localhost:5000";
 
-    //Recuperar mensaje de logout cuando se carga la página
     useEffect(() => {
+        // Redireccionamos al usuario si ya está logueado
+        const token = localStorage.getItem("token");
+        const user = JSON.parse(localStorage.getItem("user"));
+
+        if (token && user) {
+            try {
+            const decoded = jwtDecode(token);
+            const now = Date.now() / 1000;
+            if (decoded.id === user.id && decoded.exp > now) {
+                navigate("/home");
+            }
+            } catch (err) {
+            // Entra aqui cuando el Token está malformado (No pasará nunca)
+            }
+        }
+
         const storedMessage = localStorage.getItem("logoutMessage");
         if (storedMessage) {
             setMessage(JSON.parse(storedMessage));
-            localStorage.removeItem("logoutMessage"); // Limpiar mensaje después de mostrarlo
+            localStorage.removeItem("logoutMessage");
         }
     }, []);
 
@@ -25,25 +41,24 @@ const LoginForm = () => {
 };
 
 const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    /* if(formData.email.trim() !== "" && formData.password.trim() !== "") {
-        setMessage({ text: res.data.msg, type: "successful" });
-        setTimeout(() => {
-            setMessage({ text: "", type: "" });
-            navigate("/home")
-        }, 2000); 
-    } */
+  try {
+    const res = await axios.post(`${BACK_URL}/api/auth/login`, formData);
 
-    // Simulación local sin hablar con el servidor
-    if (formData.email && formData.password) {
-    setMessage({ text: "Login successful", type: "successful" });
+    // Guardar token y usuario en localStorage
+    localStorage.setItem("token", res.data.token);
+    localStorage.setItem("user", JSON.stringify(res.data.user));
+
+    setMessage({ text: res.data.msg, type: "successful" });
+
     setTimeout(() => {
-        setMessage({ text: "", type: "" });
-        navigate("/home");
+      setMessage({ text: "", type: "" });
+      navigate("/home");
     }, 2000);
-    }
-
+  } catch (error) {
+    setMessage({ text: error.response?.data?.msg || "Login failed", type: "error" });
+  }
 };
 
     return (

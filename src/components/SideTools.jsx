@@ -3,31 +3,16 @@ import "../styles/sideTools.css";
 import { useNavigate } from "react-router-dom";
 import RestartButton from "./RestartButton";
 
+
 const SideTools = ({ isSidebarOpen, setCurrentView, setMessage }) => {
 
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    try {
-      const response = await fetch("http://127.0.0.1:5000/api/auth/logout", {
-        method: "POST",
-        credentials: "include", // Para enviar cookies
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        localStorage.setItem("logoutMessage", JSON.stringify({ text: data.msg, type: "successful" })); // Guardar mensaje
-        navigate("/"); 
-      } else {
-        localStorage.setItem("logoutMessage", JSON.stringify({ text: "Logout failed", type: "error" }));
-        navigate("/");
-      }
-    } catch (error) {
-      localStorage.setItem("logoutMessage", JSON.stringify({ text: "Error during logout", type: "error" }));
-      console.error("Error during logout:", error);
-      navigate("/");
-    }
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.setItem("logoutMessage", JSON.stringify({ text: "Logged out successfully", type: "successful" }));
+    navigate("/");
   };
 
   return (
@@ -45,7 +30,7 @@ const SideTools = ({ isSidebarOpen, setCurrentView, setMessage }) => {
       >
         Live Webcam
       </button>
-      <button className="sidebar-btn logout" onClick={handleLogout}>Logout</button>
+      <button className="sidebar-btn logout" onClick={logout}>Logout</button>
       <RestartButton setMessage={setMessage} />
     </div>
   );

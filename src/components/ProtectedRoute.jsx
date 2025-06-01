@@ -1,27 +1,41 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const ProtectedRoute = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
-  const BACK_URL = import.meta.env.VITE_BACK_URL || "http://localhost:5000";
+  const token = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem("user"));
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        await axios.get(`${BACK_URL}/api/auth/profile`, {
-          withCredentials: true,
-        });
-        setIsAuthenticated(true);
-      } catch (error) {
-        setIsAuthenticated(false);
-      }
-    };
-    checkAuth();
-  }, [BACK_URL]);
+  if (!token || !user) {
+    return <Navigate to="/" replace />;
+  }
 
-  if (isAuthenticated === null) return null;
-  return isAuthenticated ? <Outlet /> : <Navigate to="/" />; 
+  try {
+    const decoded = jwtDecode(token);
+
+    // Validar que el ID del token coincida con el del localStorage
+    if (decoded.id !== user.id) {
+      return <Navigate to="/" replace />;
+    }
+
+    // Validar expiración manualmente (jwt-decode no lo hace solo)
+    const now = Date.now() / 1000;
+    if (decoded.exp < now) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      return <Navigate to="/" replace />;
+    }
+
+    // Si todo está bien, se permite el acceso
+    return <Outlet />;
+
+  } catch (err) {
+    // Token malformado o inválido (No pasará nunca)
+    console.error("Token inválido:", err);
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    return <Navigate to="/" replace />;
+  }
 };
 
 export default ProtectedRoute;
