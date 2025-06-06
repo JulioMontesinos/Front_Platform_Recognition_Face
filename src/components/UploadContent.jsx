@@ -324,7 +324,7 @@ const UploadContent = ({hiddenUpload, setMessage}) => {
                 </div>
                 <div className="model-accuracy-box">
                   <p>Model Accuracy</p>
-                  <span className="accuracy-value">93%</span>
+                  <span className="accuracy-value">91.8%</span>
                 </div>
               </div>
           </div>
