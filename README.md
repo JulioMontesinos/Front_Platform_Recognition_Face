@@ -10,7 +10,7 @@ Este proyecto es una aplicación web full-stack diseñada para analizar emocione
 
 ---
 
-Dado que la arquitectura de este proyecto es compleja para un despliegue público, he publicado todo el código para que podáis instalarlo en vuestro sistema y probarlo
+Dado que la arquitectura de este proyecto es compleja para un despliegue público (Las librerías de deep-face son extremadamente grandes), he publicado todo el código para que podáis instalarlo en vuestro sistema y probarlo
 
 
 #### Análisis de Imagen Subida
@@ -39,7 +39,7 @@ Este proyecto sigue una arquitectura de microservicios, compuesta por tres parte
 
 1.  **Frontend (Este Repositorio)**: Una aplicación de una sola página (SPA) construida con **React** que gestiona la interfaz de usuario y la interacción.
 2.  **Backend de Autenticación**: Un servidor en **Node.js** con **Express** que maneja el registro, login y la validación de usuarios mediante JWT.
-    * **[🔗 Ver Repositorio del Backend de Autenticación]([URL-DEL-REPO-BACKEND-NODE]](https://github.com/JulioMontesinos/Back_Platform_Recognition_Face)**
+    * **[🔗 Ver Repositorio del Backend de Autenticación](https://github.com/JulioMontesinos/Back_Platform_Recognition_Face)**
 3.  **Backend de IA (Análisis Facial)**: Un servidor en **Python** con **Flask** que utiliza la librería **DeepFace** y **OpenCV** para realizar todo el procesamiento y análisis de las imágenes.
     * **[🔗 Ver Repositorio del Backend de IA](https://github.com/JulioMontesinos/facial_emotion)**
 
@@ -49,7 +49,7 @@ Frontend (Cliente): Una aplicación React que se ejecuta en el navegador del usu
 
     Backend de Autenticación (Servidor Node.js): Una API REST construida con Express que gestiona exclusivamente a los usuarios. Su lógica principal incluye:
 
-        Validar credenciales contra la base de datos (actualmente un JSON, pero diseñado para MongoDB).
+        Validar credenciales contra la base de datos diseñado para MongoDB.
 
         Hashear contraseñas con bcrypt.
 
@@ -152,7 +152,7 @@ npm run dev
 #### **3. Configurar y Lanzar el Backend de IA (Python)**
 
 # Abre una NUEVA terminal y navega a la carpeta del backend de IA
-cd [nombre-de-la-carpeta-facial-python]
+cd facial_emotion
 
 # Crea y activa un entorno virtual
 python -m venv env
@@ -177,7 +177,7 @@ Una vez que inicies el análisis con la webcam, verás en esta terminal un regis
 #### **4. Configurar y Lanzar el Frontend (React)**
 
 # Abre una TERCERA terminal y navega a la carpeta del frontend
-cd [nombre-de-la-carpeta-del-frontend]
+cd Front_Platform_Recognition_Face
 
 # Instala las dependencias
 npm install
