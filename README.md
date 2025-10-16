@@ -1,4 +1,4 @@
-# 🎭 Análisis de Emociones Faciales en Tiempo Real
+# 🎭 Facial Emotion Analysis in Real Time
 
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
@@ -6,183 +6,182 @@
 ![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
 ![DeepFace](https://img.shields.io/badge/DeepFace-4A4A4A?style=for-the-badge&logo=tensorflow&logoColor=FF6F00)
 
-Este proyecto es una aplicación web full-stack diseñada para analizar emociones faciales a partir de imágenes estáticas o de una transmisión de video en tiempo real desde la webcam del usuario.
+This project is a full-stack web application designed to analyze facial emotions from static images or from a real-time video stream from the user's webcam.
 
 ---
 
-Dado que la arquitectura de este proyecto es compleja para un despliegue público (Las librerías de deep-face son extremadamente grandes), he publicado todo el código para que podáis instalarlo en vuestro sistema y probarlo
+Given that the architecture of this project is complex for public deployment (The deep-face libraries are extremely large), I have published all the code so you can install it on your system and test it.
 
 
-#### Análisis de Imagen Subida
+#### Uploaded Image Analysis
 
 ![4](https://github.com/user-attachments/assets/c9bcb02c-097b-47c9-bbed-a1b53505efef)
 
 
-#### Análisis en Tiempo Real con Webcam
+#### Real-Time Analysis with Webcam
 
 ![2](https://github.com/user-attachments/assets/8f023de9-c516-4ca7-b31a-e317390c87c7)
 
 ---
 
-### ✨ Características Principales
+### ✨ Main Features
 
-* **Sistema de Autenticación Completo**: Registro e inicio de sesión de usuarios con tokens JWT para proteger las rutas.
-* **Análisis de Imágenes**: Sube un archivo de imagen (JPG, PNG) y la aplicación detectará la emoción facial predominante y un ranking de las más probables.
-* **Análisis en Tiempo Real**: Activa la webcam para obtener un análisis continuo de tus expresiones faciales, con una superposición que muestra la emoción detectada en cada momento.
-* **Interfaz Reactiva**: Construido con React para una experiencia de usuario fluida y dinámica.
+* **Complete Authentication System**: User registration and login with JWT tokens to protect routes.
+* **Image Analysis**: Upload an image file (JPG, PNG) and the application will detect the predominant facial emotion and a ranking of the most probable ones.
+* **Real-Time Analysis**: Activate the webcam to get continuous analysis of your facial expressions, with an overlay showing the detected emotion at each moment.
+* **Reactive Interface**: Built with React for a smooth and dynamic user experience.
 
 ---
 
-### 🏗️ Arquitectura del Proyecto
+### 🏗️ Project Architecture
 
-Este proyecto sigue una arquitectura de microservicios, compuesta por tres partes independientes que se comunican entre sí:
+This project follows a microservices architecture, composed of three independent parts that communicate with each other:
 
-1.  **Frontend (Este Repositorio)**: Una aplicación de una sola página (SPA) construida con **React** que gestiona la interfaz de usuario y la interacción.
-2.  **Backend de Autenticación**: Un servidor en **Node.js** con **Express** que maneja el registro, login y la validación de usuarios mediante JWT.
-    * **[🔗 Ver Repositorio del Backend de Autenticación](https://github.com/JulioMontesinos/Back_Platform_Recognition_Face)**
-3.  **Backend de IA (Análisis Facial)**: Un servidor en **Python** con **Flask** que utiliza la librería **DeepFace** y **OpenCV** para realizar todo el procesamiento y análisis de las imágenes.
-    * **[🔗 Ver Repositorio del Backend de IA](https://github.com/JulioMontesinos/facial_emotion)**
+1.  **Frontend (This Repository)**: A single-page application (SPA) built with **React** that manages the user interface and interaction.
+2.  **Authentication Backend**: A server in **Node.js** with **Express** that handles user registration, login, and user validation through JWT.
+    * **[🔗 View Authentication Backend Repository](https://github.com/JulioMontesinos/Back_Platform_Recognition_Face)**
+3.  **AI Backend (Facial Analysis)**: A server in **Python** with **Flask** that uses the **DeepFace** and **OpenCV** libraries to perform all image processing and analysis.
+    * **[🔗 View AI Backend Repository](https://github.com/JulioMontesinos/facial_emotion)**
 
-## Análisis de la Arquitectura y Flujos de Datos
+## Architecture Analysis and Data Flows
 
-Frontend (Cliente): Una aplicación React que se ejecuta en el navegador del usuario. Es responsable de toda la interfaz y la gestión del estado del lado del cliente (como el token de autenticación).
+Frontend (Client): A React application that runs in the user's browser. It is responsible for the entire interface and client-side state management (such as the authentication token).
 
-    Backend de Autenticación (Servidor Node.js): Una API REST construida con Express que gestiona exclusivamente a los usuarios. Su lógica principal incluye:
+    Authentication Backend (Node.js Server): A REST API built with Express that manages users exclusively. Its main logic includes:
 
-        Validar credenciales contra la base de datos diseñado para MongoDB.
+        Validating credentials against the database designed for MongoDB.
 
-        Hashear contraseñas con bcrypt.
+        Hashing passwords with bcrypt.
 
-        Crear y validar JSON Web Tokens (JWT) para las sesiones.
+        Creating and validating JSON Web Tokens (JWT) for sessions.
 
-    Backend de IA (Servidor Python): Un servidor Flask dedicado a la computación pesada. Su lógica principal incluye:
+    AI Backend (Python Server): A Flask server dedicated to heavy computation. Its main logic includes:
 
-        Recibir imágenes y frames de video.
+        Receiving images and video frames.
 
-        Usar OpenCV para el pre-procesamiento de imágenes (decodificar, cambiar color, redimensionar).
+        Using OpenCV for image pre-processing (decoding, color conversion, resizing).
 
-        Utilizar la librería DeepFace (con TensorFlow por debajo) para ejecutar el modelo de análisis de emociones.
+        Using the DeepFace library (with TensorFlow underneath) to run the emotion analysis model.
 
-        Servir un stream de video en vivo.
+        Serving a live video stream.
 
-Flujos de Datos Detallados:
+Detailed Data Flows:
 
-1. Flujo de Autenticación:
+1. Authentication Flow:
 
-    Paso 1: El usuario introduce su email y contraseña en el formulario de React.
+    Step 1: The user enters their email and password in the React form.
 
-    Paso 2: El frontend envía una petición POST a /api/auth/login en el servidor Node.js.
+    Step 2: The frontend sends a POST request to /api/auth/login on the Node.js server.
 
-    Paso 3: El servidor Node.js busca al usuario por email y compara la contraseña hasheada usando bcrypt.
+    Step 3: The Node.js server searches for the user by email and compares the hashed password using bcrypt.
 
-    Paso 4: Si las credenciales son válidas, genera un JWT y lo devuelve al frontend.
+    Step 4: If the credentials are valid, it generates a JWT and returns it to the frontend.
 
-    Paso 5: El frontend de React guarda el JWT en localStorage para autenticar peticiones futuras a rutas protegidas.
+    Step 5: The React frontend saves the JWT in localStorage to authenticate future requests to protected routes.
 
-2. Flujo de Análisis de Emociones (Imagen y Video):
+2. Emotion Analysis Flow (Image and Video)
 
-    Paso 1: Desde una ruta protegida, el usuario sube una imagen o activa la webcam.
+    Step 1: From a protected route, the user uploads an image or activates the webcam.
 
-    Paso 2 (Imagen): El frontend envía la imagen en un FormData a la ruta /analyze-image del servidor Python/Flask.
+    Step 2 (Image): The frontend sends the image in a FormData to the /analyze-image route on the Python/Flask server.
 
-    Paso 2 (Webcam): El frontend hace dos cosas en paralelo:
+   Step 2 (Webcam): The frontend does two things in parallel:
 
-        Establece una conexión GET a /video_feed para recibir el stream de video.
+        Establishes a GET connection to /video_feed to receive the video stream.
 
-        Periódicamente, captura un frame y lo envía vía POST a /analyze-image.
+        Periodically, captures a frame and sends it via POST to /analyze-image.
 
-    Paso 3: El servidor Flask recibe la imagen, OpenCV la pre-procesa, y DeepFace la analiza.
+    Step 3: The Flask server receives the image, OpenCV pre-processes it, and DeepFace analyzes it.
 
-    Paso 4: El servidor Flask devuelve un objeto JSON con la emoción dominante, el porcentaje de confianza y un ranking de emociones.
+    Step 4: The Flask server returns a JSON object with the dominant emotion, confidence percentage, and an emotion ranking.
 
-    Paso 5: El frontend de React recibe este JSON y actualiza la interfaz para mostrar los resultados al usuario.
+    Step 5: The React frontend receives this JSON and updates the interface to display the results to the user.
 
-### 🛠️ Tecnologías Utilizadas
+### 🛠️ Technologies Used
 
 * **Frontend**: React, Vite, Axios, JWT-Decode, React Router.
-* **Backend (Autenticación)**: Node.js, Express, bcryptjs, JSON Web Token (JWT), CORS.
+* **Backend (Authentication)**: Node.js, Express, bcryptjs, JSON Web Token (JWT), CORS.
 * **Backend (IA)**: Python, Flask, DeepFace, TensorFlow, OpenCV, NumPy.
 
 ---
 
-### 🚀 Cómo Ejecutar este Proyecto Localmente
+### 🚀 How to Run this Project Locally
 
-Para poner en marcha este proyecto, necesitarás tener los tres servidores funcionando simultáneamente.
+To run this project, you will need to have all three servers running simultaneously.
 
-#### **Pre-requisitos**
+#### **Prerequisites**
 * Node.js (v18 o superior)
 * Python (v3.9 o superior)
 * Git
 
-#### **1. Clonar los Repositorios**
-Abre tu terminal y clona los tres repositorios en una misma carpeta.
+#### **1. Clone the repositories**
+Open your terminal and clone the three repositories in the same folder.
 
 ```bash
-# Clona este repositorio (Frontend)
+# Clone the Repository (Frontend)
 git clone https://github.com/JulioMontesinos/Front_Platform_Recognition_Face.git
 
-# Clona el Backend de Autenticación
+# Clone the Authentication Backend
 git clone https://github.com/JulioMontesinos/Back_Platform_Recognition_Face.git
 
-# Clona el Backend de IA
+# Clone the AI Backend
 git clone https://github.com/JulioMontesinos/facial_emotion.git
 ```
 
-#### **2. Configurar y Lanzar el Backend de Autenticación (Node.js)**
+#### **2. Configure and Launch the Authentication Backend (Node.js)**
 
-# Navega a la carpeta del backend de auth
+# Navigate to the auth backend folder
 cd Back_Platform_Recognition_Face
 
-# Instala las dependencias
+# Install dependencies
 npm install
 
-# El fichero .env del backend sería algo parecido a esto:
+# The .env file of the backend would be something like this:
 
 ![env](https://github.com/user-attachments/assets/7f6123f2-3cf3-4c9c-beee-dcae33fa34b6)
 
-# El fichero .env del front sería algo parecido a esto:
+# The .env file of the front would be something like this:
 
 VITE_BACK_URL=http://localhost:5000
 
-# Inicia el servidor
+# Start the server
 npm run dev
 
-> 🕒 *El servidor de autenticación debería estar corriendo en `http://localhost:5000`.*
+> 🕒 *The authentication server should be running at `http://localhost:5000`.*
 
-#### **3. Configurar y Lanzar el Backend de IA (Python)**
+#### **3. Configure and Launch the AI Backend (Python)**
 
-# Abre una NUEVA terminal y navega a la carpeta del backend de IA
+# Open a NEW terminal and navigate to the AI backend folder
 cd facial_emotion
 
-# Crea y activa un entorno virtual
+# Create and activate a virtual environment
 python -m venv env
 source env/bin/activate  # En Windows: env\Scripts\activate
 
-# Instala las dependencias
+# Install dependencies
 pip install -r requirements.txt
 
-# Inicia el servidor Flask
+# Start the Flask server
 python server.py
 
-    🕒 El servidor de IA puede tardar un poco en arrancar la primera vez mientras carga el modelo. Debería estar corriendo en http://localhost:5001.
+    🕒 The AI server may take a while to start the first time while loading the model. It should be running at http://localhost:5001.
 
-Salida Esperada en la Terminal del Servidor de IA
+Once you start the analysis with the webcam, you will see in this terminal a log of the activity in real time. This confirms that the frontend is communicating with the backend and that the DeepFace library is processing the images correctly.
 
-Una vez que inicies el análisis con la webcam, verás en esta terminal un registro de la actividad en tiempo real. Esto confirma que el frontend se está comunicando con el backend y que la librería DeepFace está procesando las imágenes correctamente.
+Expected Output in the AI Server Terminal:
 
 ![image](https://github.com/user-attachments/assets/946d0f55-9fe5-4f19-b163-17f8f6b0cc1a)
 
 
+#### **4. Configure and Launch the Frontend (React)**
 
-#### **4. Configurar y Lanzar el Frontend (React)**
-
-# Abre una TERCERA terminal y navega a la carpeta del frontend
+# Open a THIRD terminal and navigate to the frontend folder
 cd Front_Platform_Recognition_Face
 
-# Instala las dependencias
+# Install dependencies
 npm install
 
-# Inicia la aplicación de desarrollo
+# Start the development application
 npm run dev
 
-> 🚀 ¡Listo! Abre tu navegador y ve a `http://localhost:5173` para usar la aplicación.
+> 🚀 Ready! Open your browser and go to http://localhost:5173 to use the application.
